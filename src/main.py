@@ -6,8 +6,6 @@ import datetime
 import time
 import _thread
 
-print(cv2.cv2.__version__)
-
 face_cascade = cv2.CascadeClassifier('./src/cascades/data/haarcascade_frontalface_alt2.xml')
 
 def addTimestamp(img):
