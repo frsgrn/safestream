@@ -18,17 +18,23 @@ def saveImage(img):
 
 def removeFaces(img):
     gray  = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=2, minNeighbors=5)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)
     for (x, y, w, h) in faces:
         end_cord_x = x + w
         end_cord_y = y + h
         cv2.rectangle(img, (x, y), (x+w, y+h), (0,0,0), -1)
 
+def takePicture():
+    cap = cv2.VideoCapture(0)
+    cap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+    s, img = cap.read()
+    cap.release()
+    return s, img
+
 def record():
-    cam = cv2.VideoCapture(0)
     try:
         while True:
-            s, img = cam.read()
+            s, img = takePicture()
             if s:
                 removeFaces(img)
                 addTimestamp(img)
@@ -36,9 +42,8 @@ def record():
                 print("image captured")
                 time.sleep(5)
             else:
-                print("image capture failed")
+                print("failed image capture")
                 time.sleep(10)
-                cam = cv2.VideoCapture(0)
     except KeyboardInterrupt:
         print('interrupted!')
 
